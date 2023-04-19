@@ -8,6 +8,7 @@ import p5 from "p5";
 // import sketch from "./modules/sketch5"
 // import sketch from "./modules/sketch6"
 // import sketch from "./modules/sketch7"
-import sketch from "./modules/sketch8"
+// import sketch from "./modules/sketch8"
+import sketch from "./modules/sketch9"
 
 new p5(sketch);
