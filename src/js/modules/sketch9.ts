@@ -22,7 +22,7 @@ class Bubble {
     let filter = "";
     for (let i = 0; i < 8; i++) {
       let r = i ** 1.5;
-      filter += `drop-shadow(${r}px ${r * 3}px ${r * 2}px hsl(${j * 32 + i * 38} 99% 80%))`;
+      filter += `drop-shadow(${r}px ${r * 3}px ${r * 2}px hsl(${j * 32 + i * 38} 100% 90%))`;
     }
 
     // 描画コンテキストにフィルターを適用する
@@ -46,15 +46,13 @@ const sketch = (p: p5) => {
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
     p.noFill();
-    // Bubbleインスタンスを10個生成し、配列に格納する
-    for (let j = 0; j < 10; j++) {
-      for (let i = 0; i < 10; i++) {
-        const x = p.random(p.width);
-        const y = p.random(p.height);
-        const d = p.random(9, 130);
-        const bubble = new Bubble(x, y, d);
-        bubbles.push(bubble);
-      }
+    // Bubbleインスタンスを2個生成し、配列に格納する
+    for (let j = 0; j < 2; j++) {
+      const x = p.random(p.width);
+      const y = p.height;
+      const d = p.random(9, 130);
+      const bubble = new Bubble(x, y, d);
+      bubbles.push(bubble);
     }
   };
 
