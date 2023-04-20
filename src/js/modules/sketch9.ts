@@ -9,7 +9,7 @@ class Bubble {
     this.y = y;
     this.d = d;
   }
-  draw(p: p5, j: number) {
+  draw(p: p5, f: string) {
     // ストロークの色を空にする
     p.stroke("");
 
@@ -18,15 +18,8 @@ class Bubble {
     // 円を描画する
     p.circle(this.x, this.y, this.d);
 
-    // ドロップシャドウを描画する
-    let filter = "";
-    for (let i = 0; i < 8; i++) {
-      let r = i ** 1.5;
-      filter += `drop-shadow(${r}px ${r * 3}px ${r * 2}px hsl(${j * 32 + i * 38} 100% 90%))`;
-    }
-
     // 描画コンテキストにフィルターを適用する
-    p.drawingContext.filter = filter;
+    p.drawingContext.filter = f;
 
     // 円の形にクリッピングする
     p.drawingContext.clip();
@@ -42,12 +35,20 @@ class Bubble {
 
 const sketch = (p: p5) => {
   let bubbles: Bubble[] = [];
+  let t = 0;
+
+  // ドロップシャドウを作成
+  let filter = "";
+  for (let i = 0; i < 2; i++) {
+    let r = i ** 2.5;
+    filter += `drop-shadow(${r}px ${r * 3}px ${r * 5}px hsl(${i * 108} 100% 80%))`;
+  }
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
     p.noFill();
     // Bubbleインスタンスを2個生成し、配列に格納する
-    for (let j = 0; j < 2; j++) {
+    for (let j = 0; j < 10; j++) {
       const x = p.random(p.width);
       const y = p.height;
       const d = p.random(9, 130);
@@ -57,11 +58,17 @@ const sketch = (p: p5) => {
   };
 
   p.draw = () => {
+    t++;
+    console.log(t);
+
     p.background(255);
+    p.stroke("");
+    p.push();
     // 配列の中のBubbleインスタンスを1pxずつ移動させ、draw関数で描画する
     for (let i = 0; i < bubbles.length; i++) {
-      bubbles[i].draw(p, i);
+      bubbles[i].draw(p, filter);
     }
+    p.pop();
   };
 };
 
