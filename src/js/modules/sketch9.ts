@@ -4,44 +4,46 @@ class Bubble {
   x: number;
   y: number;
   d: number;
+  noiseScale: number;
   constructor(x: number, y: number, d: number) {
     this.x = x;
     this.y = y;
     this.d = d;
+    this.noiseScale = 0.02;
   }
-  draw(p: p5, f: string) {
-    // ストロークの色を空にする
+  draw(p: p5, f: string, t: number) {
     p.stroke("");
 
     p.push();
 
-    // 円を描画する
-    p.circle(this.x, this.y, this.d);
+    const noiseX = p.noise(this.x * this.noiseScale * t/2000, this.y * this.noiseScale * t/2000);
+    const noiseY = p.noise(this.x * this.noiseScale * t/2000 + 100, this.y * this.noiseScale * t/2000 + 100);
+    const ellipseW = this.d * (0.8 + 0.2 * noiseX);
+    const ellipseH = this.d * (0.8 + 0.2 * noiseY);
 
-    // 描画コンテキストにフィルターを適用する
+    p.ellipse(this.x, this.y, ellipseW, ellipseH);
     p.drawingContext.filter = f;
-
-    // 円の形にクリッピングする
     p.drawingContext.clip();
-
-    // 円を描画する
-    p.circle(this.x, this.y, this.d);
+    p.ellipse(this.x, this.y, ellipseW, ellipseH);
     p.pop();
+
   }
 }
 
 const sketch = (p: p5) => {
   let bubbles: Bubble[] = [];
   let t = 0;
+  const r = 65;
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
     p.noFill();
+    p.angleMode(p.DEGREES);
     // Bubbleインスタンスを生成し、配列に格納する
     for (let j = 0; j < 1; j++) {
       const x = p.random(p.width);
       const y = p.random(p.height);
-      const d = 130;
+      const d = 2 * r;
       const bubble = new Bubble(x, y, d);
       bubbles.push(bubble);
     }
@@ -59,14 +61,11 @@ const sketch = (p: p5) => {
     let filter = "";
     for (let i = 0; i < 6; i++) {
       let r = i ** 2.5;
-      let I = i * 4 + "px ";
-      filter += `drop-shadow(${r * 4}px ${r * 3}px ${r * 3}px hsl(${i * 108 + t} 100% 90%))`;
-      // filter += `drop-shadow(-${I}-${r}${r}hsl(${160+r} 99%70%))`;
-      // filter += `drop-shadow(-${(I)}-${r}${r}hsl(${i * 64 + t} 99% 60%))`;
+      filter += `drop-shadow(${r * 4}px ${r * 3}px ${r * 3}px hsl(${i * 108 + t} 100% 70%))`;
     }
-    // 配列の中のBubbleインスタンスを1pxずつ移動させ、draw関数で描画する
+
     for (let i = 0; i < bubbles.length; i++) {
-      bubbles[i].draw(p, filter);
+      bubbles[i].draw(p, filter, t);
     }
     p.pop();
   };
