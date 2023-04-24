@@ -61,7 +61,7 @@ const sketch = (p: p5) => {
     let filter = "";
     for (let i = 0; i < 6; i++) {
       let r = i ** 2.5;
-      filter += `drop-shadow(${r * 4}px ${r * 3}px ${r * 3}px hsl(${i * 108 + t} 100% 70%))`;
+      filter += `drop-shadow(${r * 4 * p.sin(t + 100)}px ${r * 3 * p.sin(t)}px ${r * 3}px hsl(${i * 108 + t} 100% 70%))`;
     }
 
     for (let i = 0; i < bubbles.length; i++) {
