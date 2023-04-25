@@ -57,7 +57,7 @@ class Bubble {
 const sketch = (p: p5) => {
   let bubbles: Bubble[] = [];
   let t = 0;
-  const r = 65;
+  const r = 80;
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
@@ -75,9 +75,8 @@ const sketch = (p: p5) => {
 
   p.draw = () => {
     t++;
-    console.log(t);
 
-    p.background(255);
+    p.clear(0,0,0,0);
     p.stroke("");
     p.push();
 
