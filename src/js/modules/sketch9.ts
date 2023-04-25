@@ -5,22 +5,26 @@ class Bubble {
   y: number;
   d: number;
   noiseScale: number;
-  velocity: p5.Vector; // 1. バブルの速度を表すVectorを定義する
+  velocity: p5.Vector;
   constructor(p: p5, x: number, y: number, d: number) {
     this.x = x;
     this.y = y;
     this.d = d;
     this.noiseScale = 0.02;
-    this.velocity = p.createVector(2, 3); // 初期値は(0, 0)とする
+    this.velocity = p.createVector(5, 10);
   }
   draw(p: p5, f: string, t: number, r: number) {
     p.stroke("");
 
     p.push();
 
-    // 2. 座標に速度を加算する
-    this.x += this.velocity.x;
-    this.y += this.velocity.y;
+    const noiseX = p.noise(this.x * this.noiseScale * t / 500, this.y * this.noiseScale * t / 500);
+    const noiseY = p.noise(this.x * this.noiseScale * t / 500 + 100, this.y * this.noiseScale * t / 500 + 100);
+    const ellipseW = this.d * (0.9 + 0.1 * noiseX);
+    const ellipseH = this.d * (0.9 + 0.1 * noiseY);
+
+    this.x += (noiseX - 0.5) * this.velocity.x;
+    this.y += (noiseY - 0.5) * this.velocity.y;
 
     // 画面外に出ないようにする
     if (this.x < r) {
@@ -39,11 +43,6 @@ class Bubble {
       this.y = p.height - r;
       this.velocity.y *= -1;
     }
-
-    const noiseX = p.noise(this.x * this.noiseScale * t / 500, this.y * this.noiseScale * t / 500);
-    const noiseY = p.noise(this.x * this.noiseScale * t / 500 + 100, this.y * this.noiseScale * t / 500 + 100);
-    const ellipseW = this.d * (0.9 + 0.1 * noiseX);
-    const ellipseH = this.d * (0.9 + 0.1 * noiseY);
 
     p.ellipse(this.x, this.y, ellipseW, ellipseH);
     p.drawingContext.filter = f;
