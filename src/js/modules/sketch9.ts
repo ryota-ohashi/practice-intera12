@@ -11,7 +11,7 @@ class Bubble {
     this.y = y;
     this.d = d;
     this.noiseScale = 0.02;
-    this.velocity = p.createVector(5, 10);
+    this.velocity = p.createVector(10, 30);
   }
   draw(p: p5, f: string, t: number, r: number) {
     p.stroke("");
@@ -20,10 +20,10 @@ class Bubble {
 
     const noiseX = p.noise(this.x * this.noiseScale * t / 500, this.y * this.noiseScale * t / 500);
     const noiseY = p.noise(this.x * this.noiseScale * t / 500 + 100, this.y * this.noiseScale * t / 500 + 100);
-    const ellipseW = this.d * (0.9 + 0.1 * noiseX);
-    const ellipseH = this.d * (0.9 + 0.1 * noiseY);
+    const ellipseW = this.d * (0.8 + 0.2 * noiseX);
+    const ellipseH = this.d * (0.8 + 0.2 * noiseY);
 
-    this.x += (noiseX - 0.5) * this.velocity.x;
+    this.x += noiseX * this.velocity.x;
     this.y += (noiseY - 0.5) * this.velocity.y;
 
     // 画面外に出ないようにする
