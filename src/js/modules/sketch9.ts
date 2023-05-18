@@ -57,7 +57,7 @@ class Bubble {
 const sketch = (p: p5) => {
   let bubbles: Bubble[] = [];
   let t = 0;
-  const r = 80;
+  const r = 90;
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
